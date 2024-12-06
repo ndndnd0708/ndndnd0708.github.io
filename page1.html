@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combination Calculator</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+
+        .calculator-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+            width: 750px;
+            min-height: 320px;
+            position: relative;
+        }
+
+        .title {
+            background-color: black;
+            color: white;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 1.5em;
+            width: 320px;
+            margin-bottom: 40px;
+        }
+
+        label, .output {
+            font-size: 1em;
+            margin-bottom: 10px;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 40%;
+            padding: 10px;
+            font-size: 1em;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .calculate-btn {
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+
+        .calculate-btn:hover {
+            background-color: #333;
+        }
+
+        .output {
+            font-weight: bold;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .reset-btn, .next-btn {
+            background-color: black;
+            color: white;
+            padding: 7px;
+            font-size: 1em;
+            border: none;
+            cursor: pointer;
+            width: 72px;
+            border-radius: 4px;
+            margin-top: 50px;
+            transition: background-color 0.3s;
+        }
+
+        .reset-btn:hover, .next-btn:hover {
+            background-color: #333;
+        }
+
+        .reset-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 30px;
+        }
+
+        .next-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+        }
+
+        .cat-container {
+            position: absolute;
+            right: 1px;
+            bottom: 60px;
+        }
+
+        .cat-image {
+            width: 200px;
+        }
+
+        .tooltip {position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: visible;
+            width: 150px;
+            background-color: #fff;
+            color: #000;
+            text-align: center;
+            border-radius: 15px;
+            padding: 15px;
+            position: absolute;
+            z-index: 1;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            transform: translateY(-300%);
+            margin-left: -210px;
+            opacity: 1;
+            border: 1px solid black;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: black transparent transparent transparent;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="calculator-container">
+        <div class="title">COMBINATION CALCULATOR</div>
+
+        <label for="set">Enter the elements of the set separated by commas:</label>
+        <input type="text" id="set" placeholder="1,2,3,4">
+    
+        <label for="number">Enter the number of elements to choose:</label>
+        <div class="input-container">
+            <input type="number" id="number" placeholder="1" min="1">
+            <button class="calculate-btn" onclick="calculateCombinations()">Calculate</button>
+        </div>
+
+        <button class="reset-btn" onclick="resetCalculator()">Reset</button>
+        <button class="next-btn" onclick="goToNextPage()">Next</button>
+
+        <div class="cat-container">
+            <img src="blackcat.png" alt="Cat" class="cat-image">
+            <div class="tooltip">
+               <div class="tooltiptext">Number of combinations: </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function factorial(n) {
+            return n ? n * factorial(n - 1) : 1;
+        }
+
+        function calculateCombinations() {
+            const set = document.getElementById('set').value.split(',');
+            const n = set.length;
+            const r = parseInt(document.getElementById('number').value);
+
+            if (r > n) {
+                alert("Number to choose cannot be greater than the size of the set.");
+                return;
+            }
+
+            const combinations = factorial(n) / (factorial(r) * factorial(n - r));
+            document.getElementsByClassName('tooltiptext')[0].innerHTML = `Number of combinations: ${combinations}`;
+        }
+
+        function resetCalculator() {
+            document.getElementById('set').value = '';
+            document.getElementById('number').value = '';
+            document.getElementsByClassName('tooltiptext')[0].innerText = 'Number of combinations: ';
+        }
+
+        function goToNextPage() {
+            const set = document.getElementById('set').value.split(',');
+            const r = parseInt(document.getElementById('number').value);
+            const n = set.length;
+            // Save n and r in local storage
+            localStorage.setItem('set', JSON.stringify(set));
+            localStorage.setItem('n', n);
+            localStorage.setItem('r', r);
+            // Navigate to the next page
+            window.location.href = "page2.html"; // Update with your next page URL
+        }
+    </script>
+
+</body>
+</html>

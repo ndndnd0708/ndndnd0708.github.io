@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combination Explanation</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+
+        .explanation-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+            width: 750px;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .title {
+            background-color: black;
+            color: white;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 1.5em;
+            width: 420px;
+            margin-bottom: 40px;
+        }
+
+        .content {
+            font-size: 1em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background-color: black;
+            color: white;
+            padding: 7px;
+            font-size: 1em;
+            border: none;
+            cursor: pointer;
+            width: 72px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            position: absolute;
+            bottom: 20px;
+            left: 30px;
+        }
+
+        .back-btn:hover {
+            background-color: #333;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #d9534f;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="explanation-container">
+        <div class="title">HOW TO CALCULATE COMBINATIONS</div>
+
+        <div class="content" id="explanation-content">
+            <!-- Explanation will be injected here -->
+        </div>
+
+        <button class="back-btn" onclick="goBack()">Back</button>
+    </div>
+
+    <script>
+        function factorial(n) {
+            return n ? n * factorial(n - 1) : 1;
+        }
+
+        function calculateCombinations(n, r) {
+            return factorial(n) / (factorial(r) * factorial(n - r));
+        }
+
+        function loadExplanation() {
+            // รับค่า n และ r จาก Local Storage
+            const n = parseInt(localStorage.getItem('n'));
+            const r = parseInt(localStorage.getItem('r'));
+
+            // คำนวณ C(n, r)
+            const combinations = calculateCombinations(n, r);
+
+            // แสดงคำอธิบาย
+            const explanationContent = document.getElementById('explanation-content');
+            explanationContent.innerHTML = `
+                <p>ในการคำนวณ <span class="highlight">C(n, r)</span> หรือ Combination คือการเลือกจำนวน <span class="highlight">r</span> จากจำนวนทั้งหมด <span class="highlight">n</span> โดยไม่คำนึงถึงลำดับ</p>
+                <p>สูตรที่ใช้คือ:</p>
+                <p><span class="highlight">C(n, r) = n! / [r! * (n - r)!]</span></p>
+                <p>โดย:</p>
+                <ul>
+                    <li><span class="highlight">n!</span> หมายถึงการคูณจำนวนเต็มบวกตั้งแต่ 1 ถึง n</li>
+                    <li><span class="highlight">r!</span> หมายถึงการคูณจำนวนเต็มบวกตั้งแต่ 1 ถึง r</li>
+                    <li><span class="highlight">(n - r)!</span> หมายถึงการคูณจำนวนเต็มบวกตั้งแต่ 1 ถึง (n - r)</li>
+                </ul>
+                <p>จากค่าที่ได้ <span class="highlight">n = ${n}</span> และ <span class="highlight">r = ${r}</span>:</p>
+                <p><span class="highlight">C(${n}, ${r}) = ${n}! / [${r}! * (${n} - ${r})!]</span></p>
+                <p>คำนวณค่า factorial:</p>
+                <ul>
+                    <li><span class="highlight">${n}! = ${factorial(n)}</span></li>
+                    <li><span class="highlight">${r}! = ${factorial(r)}</span></li>
+                    <li><span class="highlight">(${n} - ${r})! = ${factorial(n - r)}</span></li>
+                </ul>
+                <p>ดังนั้นผลลัพธ์ของ <span class="highlight">C(${n}, ${r}) = ${combinations}</span></p>
+            `;
+        }
+
+        function goBack() {
+            window.location.href = "page1.html"; // เปลี่ยน URL ตามความเหมาะสม
+        }
+
+        // เรียกฟังก์ชันเพื่อโหลดคำอธิบายเมื่อหน้าเว็บโหลด
+        window.onload = loadExplanation;
+    </script>
+
+</body>
+</html>
